@@ -1,17 +1,13 @@
 package com.hnt.bookService.entity;
 
-import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
@@ -19,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 
 @Entity
-
+//TODO: "Use @Data instead of setter and getter"
 public class Book {
-	
+	//TODO: "Change bookID to Id and add another bookID instance variable"
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer bookId;
@@ -29,6 +25,7 @@ public class Book {
 	@NotBlank(message = "Book Logo url not should be Blank###")
 	private String bookLogo;
 	
+	//TODO: "Change String to enum"
 	@NotBlank(message = "Book Category not should be Blank###")
 	private String category;
 	
@@ -38,11 +35,11 @@ public class Book {
 	@NotBlank(message = "Book Publisher Name not should be Blank###")
 	private String publisher;
 	
-	
-	
+	//TODO: "Change string to LocalDate"
 	@JsonFormat(pattern = "dd/mm/yyyy", shape = Shape.STRING)
 	private String publishedDate;
 	
+	//TODO:"Change integer to bigdecimal"
 	@Min(value = 1, message = "Price should be more than One Rupees###")
 	private Integer price;
 	
