@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +19,14 @@ import org.springframework.http.ResponseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.hnt.bookService.entity.Book;
+import com.hnt.bookService.entity.BookCategory;
 import com.hnt.bookService.service.BookService;
 
+import lombok.Data;
+import lombok.Setter;
+
 @ExtendWith(MockitoExtension.class)
+@Data
 public class BookControllerTest {
 	
 	@Mock
@@ -32,14 +39,14 @@ public class BookControllerTest {
 		Book book=new Book();
 		book.setBookId(1);
 		book.setBookLogo("book.com");
-		book.setCategory("Comic");
+		book.setCategory(BookCategory.COMIC);
 		book.setContent("marvel");
-		book.setPrice(300);
-		book.setPublishedDate("20/12/2022");
+		book.setPrice(BigDecimal.valueOf(300.00));
+		book.setPublishedDate("2022-08-21");
 		book.setPublisher("New");
 		book.setReaderMailId("me@gmail.com");
 		book.setTitle("XXXX");
-		book.setAuthorName("YYYY");
+		book.setAuthor("YYYY");
 		return book;
 	}
 	
@@ -47,18 +54,19 @@ public class BookControllerTest {
 	void testAddBooks() {
 		Book book=getBook();
 		when(bookService.addBook(book)).thenReturn(book);
-		Integer saveBookId=bookController.addBook(book);
-		assertEquals(1, saveBookId);
+		ResponseEntity<Integer> saveBookId=bookController.addBook(book);
+		assertEquals(1, saveBookId.getStatusCodeValue());
 	}
 	
 	@Test
 	void testReadbook() {
 		List<Book> list=new ArrayList<>();
-		String category="Comic";
-		Integer price=100;
+		BookCategory category=BookCategory.COMIC;
+		BigDecimal price=BigDecimal.valueOf(300.00);
 		String publisher="XYZ";
-		when(bookService.getBook(category, price, publisher)).thenReturn(list);
-		ResponseEntity<List<Book>> book1=bookController.findBooks(category, price, publisher);
+		String author="ABCD";
+		when(bookService.getBook(category, price, publisher, author)).thenReturn(list);
+		ResponseEntity<List<Book>> book1=bookController.findBooks(category, price, publisher, author);
 		assertEquals(list, book1.getBody());
 	}
 	
@@ -68,7 +76,7 @@ public class BookControllerTest {
 		String readerMailId="mk@gmail.com";
 		Integer bookId=1;
 		when(bookService.readBook(readerMailId, bookId)).thenReturn(book);
-		Book book1=bookController.findBook(bookId, readerMailId);
+		Book book1=bookController.findBook(readerMailId, bookId);
 		assertEquals(book, book1 );
 	}
 	

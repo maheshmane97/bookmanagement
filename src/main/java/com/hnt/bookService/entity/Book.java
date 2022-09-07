@@ -1,33 +1,52 @@
 package com.hnt.bookService.entity;
 
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 
 
 @Entity
-//TODO: "Use @Data instead of setter and getter"
+@Data
+@Getter
+@Setter
 public class Book {
-	//TODO: "Change bookID to Id and add another bookID instance variable"
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer Id;
+	
+	@Min(value = 1, message = "Book ID should be in number and greater than 1")
 	private Integer bookId;
 	
 	@NotBlank(message = "Book Logo url not should be Blank###")
 	private String bookLogo;
 	
-	//TODO: "Change String to enum"
-	@NotBlank(message = "Book Category not should be Blank###")
-	private String category;
+	@NotNull(message = "Category should not be blank###")
+	@Enumerated(EnumType.STRING)
+	private BookCategory category;
 	
 	@NotBlank(message = "Book Title not should be Blank###")
 	private String title;
@@ -35,149 +54,31 @@ public class Book {
 	@NotBlank(message = "Book Publisher Name not should be Blank###")
 	private String publisher;
 	
-	//TODO: "Change string to LocalDate"
-	@JsonFormat(pattern = "dd/mm/yyyy", shape = Shape.STRING)
+	@NotNull(message = "Published Date should not be blank###")
+	@DateTimeFormat(pattern = "dd-mm-yyyy")
+	@JsonFormat(pattern = "dd-mm-yyyy", shape = Shape.STRING)
 	private String publishedDate;
 	
-	//TODO:"Change integer to bigdecimal"
 	@Min(value = 1, message = "Price should be more than One Rupees###")
-	private Integer price;
+	@DecimalMin(value = "1.0", message = "Price should not be less than 1")
+	@Digits(integer = 4, fraction = 2)
+	private BigDecimal price;
 	
 	@NotBlank(message = "Book Content not should be Blank###")
 	private String content;
 	
 	@NotBlank(message = "Book author name not should be Blank###")
-	private String authorName;
+	private String author;
 	
 	@NotBlank(message = "Book reader name not should be Blank###")
+	@Email
 	private String readerMailId;
 
-
-
-	public Integer getBookId() {
-		return bookId;
-	}
-
-
-
-	public void setBookId(Integer bookId) {
-		this.bookId = bookId;
-	}
-
-
-
-	public String getBookLogo() {
-		return bookLogo;
-	}
-
-
-
-	public void setBookLogo(String bookLogo) {
-		this.bookLogo = bookLogo;
-	}
-
-
-
-	public String getCategory() {
-		return category;
-	}
-
-
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-
-
-	public String getTitle() {
-		return title;
-	}
-
-
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-
-
-	public String getPublisher() {
-		return publisher;
-	}
-
-
-
-	public void setPublisher(String publisher) {
-		this.publisher = publisher;
-	}
-
-
-
-	public String getPublishedDate() {
-		return publishedDate;
-	}
-
-
-
-	public void setPublishedDate(String publishedDate) {
-		this.publishedDate = publishedDate;
-	}
-
-
-
-	public Integer getPrice() {
-		return price;
-	}
-
-
-
-	public void setPrice(Integer price) {
-		this.price = price;
-	}
-
-
-
-	public String getContent() {
-		return content;
-	}
-
-
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-
-
-	public String getAuthorName() {
-		return authorName;
-	}
-
-
-
-	public void setAuthorName(String authorName) {
-		this.authorName = authorName;
-	}
-
-
-
-	public String getReaderMailId() {
-		return readerMailId;
-	}
-
-
-
-	public void setReaderMailId(String readerMailId) {
-		this.readerMailId = readerMailId;
-	}
-
-
-
-	public Book() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
+	@NotNull
+    @Pattern(regexp = "^true$|^false$", message = "allowed input: true or false")
+	private String active;
+	
+	
+	
 	
 }

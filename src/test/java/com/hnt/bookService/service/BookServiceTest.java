@@ -1,17 +1,14 @@
 package com.hnt.bookService.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
-import org.junit.jupiter.api.Test;
+import java.math.BigDecimal;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import com.hnt.bookService.entity.Book;
+import com.hnt.bookService.entity.BookCategory;
 import com.hnt.bookService.repository.BookRepository;
 
 public class BookServiceTest {
@@ -25,14 +22,14 @@ public class BookServiceTest {
 		Book book=new Book();
 		book.setBookId(1);
 		book.setBookLogo("book.com");
-		book.setCategory("Comic");
+		book.setCategory(BookCategory.COMIC);
 		book.setContent("marvel");
-		book.setPrice(300);
-		book.setPublishedDate("20/12/2022");
+		book.setPrice(BigDecimal.valueOf(300.00));
+		book.setPublishedDate("2022-08-21");
 		book.setPublisher("New");
 		book.setReaderMailId("me@gmail.com");
 		book.setTitle("XXXX");
-		book.setAuthorName("YYYY");
+		book.setAuthor("YYYY");
 		return book;
 	}
 	
